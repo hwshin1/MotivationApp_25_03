@@ -31,25 +31,36 @@ public class App {
 
             if (cmd.equals("add")) {
                 int id = lastId + 1;
-                System.out.print("Motivation : ");
-                String motivation = sc.nextLine();
+                System.out.print("Content : ");
+                String content = sc.nextLine();
                 System.out.print("Source : ");
                 String source = sc.nextLine();
                 System.out.printf("%d 번 Motivation이 등록 되었습니다.\n", id);
 
-                Motivation moty = new Motivation(id, motivation, source);
+                Motivation moty = new Motivation(id, content, source);
                 motivations.add(moty);
 
                 lastId++;
             } else if (cmd.equals("list")) {
-                System.out.println("=".repeat(40));
-                System.out.println("   번호   /   Source   /   Motivation   ");
-
                 if (motivations.size() == 0) {
                     System.out.println("등록된 Motivation이 없습니다.");
-                } else {
-                    System.out.println("등록된 Motivation이 있습니다.");
+                    continue;
                 }
+
+                System.out.println("=".repeat(40));
+                System.out.println("   번호   /   Source   /   Content   ");
+
+                for (int i = motivations.size() - 1; i >= 0; i--) { // 출력 될 때 역순으로 출력
+                    Motivation motivation = motivations.get(i);
+
+                    if (motivation.getSource().length() > 7) {
+                        // Source 출력 때 길이가 7보다 길면 ... 으로 표시해준다.
+                        System.out.printf("   %d   /   %s   /   %s   \n", motivation.getId(), motivation.getSource().substring(0,5) + "...", motivation.getContent());
+                        continue;
+                    }
+                    System.out.printf("   %d   /   %s   /   %s   \n", motivation.getId(), motivation.getSource(), motivation.getContent());
+                }
+
                 System.out.println("=".repeat(40));
             }
         }
@@ -58,12 +69,12 @@ public class App {
 
 class Motivation {
     int id;
-    String motivation;
+    String content;
     String source;
 
-    public Motivation(int id, String motivation, String source) {
+    public Motivation(int id, String content, String source) {
         this.id = id;
-        this.motivation = motivation;
+        this.content = content;
         this.source = source;
     }
 
@@ -75,12 +86,12 @@ class Motivation {
         this.id = id;
     }
 
-    public String getMotivation() {
-        return motivation;
+    public String getContent() {
+        return content;
     }
 
-    public void setMotivation(String motivation) {
-        this.motivation = motivation;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getSource() {
@@ -89,5 +100,14 @@ class Motivation {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    @Override
+    public String toString() {
+        return "Motivation{" +
+                "ID=" + id +
+                ", Content='" + content + '\'' +
+                ", Source='" + source + '\'' +
+                '}';
     }
 }
