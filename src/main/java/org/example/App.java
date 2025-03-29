@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.motivation.entity.Motivation;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -24,7 +26,7 @@ public class App {
             if (cmd.equals("exit")) {
                 System.out.println("== Motivation 종료 ==");
                 break;
-            } else if (cmd.length() == 0) {
+            } else if (cmd.isEmpty()) {
                 System.out.println("명령어가 입력되지 않았습니다.");
                 continue;
             }
@@ -42,7 +44,7 @@ public class App {
 
                 lastId++;
             } else if (cmd.equals("list")) {
-                if (motivations.size() == 0) {
+                if (motivations.isEmpty()) {
                     System.out.println("등록된 Motivation이 없습니다.");
                     continue;
                 }
@@ -62,52 +64,10 @@ public class App {
                 }
 
                 System.out.println("=".repeat(40));
+            } else {
+                System.out.println("사용할 수 없는 명령어 입니다.");
+                continue;
             }
         }
-    }
-}
-
-class Motivation {
-    int id;
-    String content;
-    String source;
-
-    public Motivation(int id, String content, String source) {
-        this.id = id;
-        this.content = content;
-        this.source = source;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    @Override
-    public String toString() {
-        return "Motivation{" +
-                "ID=" + id +
-                ", Content='" + content + '\'' +
-                ", Source='" + source + '\'' +
-                '}';
     }
 }
