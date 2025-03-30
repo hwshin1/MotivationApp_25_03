@@ -42,12 +42,36 @@ public class MotivationController {
 
             if (motivation.getSource().length() > 7) {
                 // Source 출력 때 길이가 7보다 길면 ... 으로 표시해준다.
-                System.out.printf("   %d   /   %s   /   %s   \n", motivation.getId(), motivation.getSource().substring(0,5) + "...", motivation.getContent());
+                System.out.printf("   %d   /   %s   /   %s   \n", motivation.getId(), motivation.getSource().substring(0, 5) + "...", motivation.getContent());
                 continue;
             }
             System.out.printf("   %d   /   %s   /   %s   \n", motivation.getId(), motivation.getSource(), motivation.getContent());
         }
 
         System.out.println("=".repeat(40));
+    }
+
+    public void delete(String cmd) {
+        int id = Integer.parseInt(cmd.split(" ")[1]);
+
+        Motivation foundMotivation = null;
+        int foundIndex = -1;
+
+        for (int i = 0; i < motivations.size(); i++) {
+            Motivation motivation = motivations.get(i);
+            if (motivation.getId() == id) {
+                foundMotivation = motivation;
+                foundIndex = i;
+                break;
+            }
+        }
+
+        if (foundMotivation == null) {
+            System.out.println("해당 등록된 글이 없습니다.");
+            return;
+        }
+
+        motivations.remove(foundIndex);
+        System.out.println(id + "번이 삭제되었습니다.");
     }
 }
