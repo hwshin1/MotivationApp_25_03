@@ -74,4 +74,30 @@ public class MotivationController {
         motivations.remove(foundIndex);
         System.out.println(id + "번이 삭제되었습니다.");
     }
+
+    // 명령어 : delete?id=1
+    public void newDelete(String cmd) {
+        Rq rq = new Rq(cmd);
+
+        System.out.println("rq.getParams(\"id\") : " + rq.getParams("id"));
+
+        int id = Integer.parseInt(rq.getParams("id"));
+
+        Motivation foundMotivation = null;
+
+        for (Motivation motivation : motivations) {
+            if (motivation.getId() == id) {
+                foundMotivation = motivation;
+                break;
+            }
+        }
+
+        if (foundMotivation == null) {
+            System.out.println("해당 등록된 글이 없습니다.");
+            return;
+        }
+
+        motivations.remove(foundMotivation);
+        System.out.println(id + "번이 삭제되었습니다.");
+    }
 }
