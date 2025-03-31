@@ -95,4 +95,61 @@ public class MotivationController {
         motivations.remove(foundMotivation);
         System.out.println(id + "번이 삭제되었습니다.");
     }
+
+    public void modify(String cmd) {
+        int id = 0;
+
+        try {
+            id = Integer.parseInt(cmd.split(" ")[1]);
+        } catch (Exception e) {
+            System.out.println("명령어를 확인해주세요.");
+            return;
+        }
+
+        Motivation foundMotivation = null;
+
+        for (Motivation motivation : motivations) {
+            if (motivation.getId() == id) {
+                foundMotivation = motivation;
+            }
+        }
+
+        if (foundMotivation == null) {
+            System.out.println("해당 등록된 글이 없습니다.");
+            return;
+        }
+
+        System.out.println("Content: " + foundMotivation.getContent());
+        System.out.println("Source: " + foundMotivation.getSource());
+
+        String newContent;
+        String newSource;
+
+        while (true) {
+            System.out.print("new Content : ");
+            newContent = Container.getScanner().nextLine();
+
+            if (!newContent.isEmpty()) {
+                break;
+            }
+
+            System.out.println("수정할 Content를 입력해주세요.");
+        }
+
+        while (true) {
+            System.out.print("new Source : ");
+            newSource = Container.getScanner().nextLine();
+
+            if (!newSource.isEmpty()) {
+                break;
+            }
+
+            System.out.println("수정할 Source를 입력해주세요.");
+        }
+
+        foundMotivation.setContent(newContent);
+        foundMotivation.setSource(newSource);
+
+        System.out.println(id + "번 수정되었습니다.");
+    }
 }

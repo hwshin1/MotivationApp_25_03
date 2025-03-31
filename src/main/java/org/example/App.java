@@ -28,9 +28,10 @@ public class App {
                 motivationController.list();
             } else if (cmd.startsWith("delete?")) {
                 motivationController.newDelete(cmd);
-            }
-            else if (cmd.startsWith("delete")) {
+            } else if (cmd.startsWith("delete")) {
                 motivationController.delete(cmd);
+            } else if (cmd.startsWith("modify")) {
+                motivationController.modify(cmd);
             } else {
                 System.out.println("사용할 수 없는 명령어 입니다.");
             }
