@@ -1,26 +1,21 @@
 package org.example.motivation.controller;
 
+import org.example.Container;
 import org.example.motivation.entity.Motivation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class MotivationController {
-    Scanner sc;
     int lastId = 0;
     List<Motivation> motivations = new ArrayList<>();
-
-    public MotivationController(Scanner sc) {
-        this.sc = sc;
-    }
 
     public void add() {
         int id = lastId + 1;
         System.out.print("Content : ");
-        String content = sc.nextLine();
+        String content = Container.getScanner().nextLine();
         System.out.print("Source : ");
-        String source = sc.nextLine();
+        String source = Container.getScanner().nextLine();
         System.out.printf("%d 번 Motivation이 등록 되었습니다.\n", id);
 
         Motivation moty = new Motivation(id, content, source);
