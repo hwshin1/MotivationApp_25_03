@@ -2,97 +2,41 @@ package org.example.motivation.controller;
 
 import org.example.Container;
 import org.example.motivation.entity.Motivation;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.example.motivation.service.MotivationService;
 
 public class MotivationController {
-    int lastId = 0;
-    List<Motivation> motivations = new ArrayList<>();
+    private final MotivationService motivationService;
+
+    public MotivationController() {
+        motivationService = new MotivationService();
+    }
 
     public void add() {
-        int id = lastId + 1;
         System.out.print("Content : ");
         String content = Container.getScanner().nextLine();
         System.out.print("Source : ");
         String source = Container.getScanner().nextLine();
+
+        int id = motivationService.add(content, source);
+
         System.out.printf("%d 번 Motivation이 등록 되었습니다.\n", id);
-
-        Motivation moty = new Motivation(id, content, source);
-        motivations.add(moty);
-
-        lastId++;
     }
 
     public void list() {
-        if (motivations.isEmpty()) {
-            System.out.println("등록된 Motivation이 없습니다.");
-        }
-
-        System.out.println("=".repeat(40));
-        System.out.println("   번호   /   Source   /   Content   ");
-
-        for (int i = motivations.size() - 1; i >= 0; i--) { // 출력 될 때 역순으로 출력
-            Motivation motivation = motivations.get(i);
-
-            if (motivation.getSource().length() > 7) {
-                // Source 출력 때 길이가 7보다 길면 ... 으로 표시해준다.
-                System.out.printf("   %d   /   %s   /   %s   \n", motivation.getId(), motivation.getSource().substring(0, 5) + "...", motivation.getContent());
-                continue;
-            }
-            System.out.printf("   %d   /   %s   /   %s   \n", motivation.getId(), motivation.getSource(), motivation.getContent());
-        }
-
-        System.out.println("=".repeat(40));
+        motivationService.list();
     }
 
     public void delete(String cmd) {
         int id = Integer.parseInt(cmd.split(" ")[1]);
 
-        Motivation foundMotivation = null;
-        int foundIndex = -1;
+        int foundIndex = motivationService.getIndexById(id);
 
-        for (int i = 0; i < motivations.size(); i++) {
-            Motivation motivation = motivations.get(i);
-            if (motivation.getId() == id) {
-                foundMotivation = motivation;
-                foundIndex = i;
-                break;
-            }
-        }
-
-        if (foundMotivation == null) {
+        if (foundIndex == -1) {
             System.out.println("해당 등록된 글이 없습니다.");
             return;
         }
 
-        motivations.remove(foundIndex);
-        System.out.println(id + "번이 삭제되었습니다.");
-    }
-
-    // 명령어 : delete?id=1
-    public void newDelete(String cmd) {
-        Rq rq = new Rq(cmd);
-
-        System.out.println("rq.getParams(\"id\") : " + rq.getParams("id"));
-
-        int id = Integer.parseInt(rq.getParams("id"));
-
-        Motivation foundMotivation = null;
-
-        for (Motivation motivation : motivations) {
-            if (motivation.getId() == id) {
-                foundMotivation = motivation;
-                break;
-            }
-        }
-
-        if (foundMotivation == null) {
-            System.out.println("해당 등록된 글이 없습니다.");
-            return;
-        }
-
-        motivations.remove(foundMotivation);
+        motivationService.doDelete(foundIndex);
         System.out.println(id + "번이 삭제되었습니다.");
     }
 
@@ -106,50 +50,14 @@ public class MotivationController {
             return;
         }
 
-        Motivation foundMotivation = null;
-
-        for (Motivation motivation : motivations) {
-            if (motivation.getId() == id) {
-                foundMotivation = motivation;
-            }
-        }
+        Motivation foundMotivation = motivationService.findId(id);
 
         if (foundMotivation == null) {
             System.out.println("해당 등록된 글이 없습니다.");
             return;
         }
 
-        System.out.println("Content: " + foundMotivation.getContent());
-        System.out.println("Source: " + foundMotivation.getSource());
-
-        String newContent;
-        String newSource;
-
-        while (true) {
-            System.out.print("new Content : ");
-            newContent = Container.getScanner().nextLine();
-
-            if (!newContent.isEmpty()) {
-                break;
-            }
-
-            System.out.println("수정할 Content를 입력해주세요.");
-        }
-
-        while (true) {
-            System.out.print("new Source : ");
-            newSource = Container.getScanner().nextLine();
-
-            if (!newSource.isEmpty()) {
-                break;
-            }
-
-            System.out.println("수정할 Source를 입력해주세요.");
-        }
-
-        foundMotivation.setContent(newContent);
-        foundMotivation.setSource(newSource);
-
+        motivationService.doModify(foundMotivation);
         System.out.println(id + "번 수정되었습니다.");
     }
 }
